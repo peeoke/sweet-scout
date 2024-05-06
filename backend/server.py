@@ -58,11 +58,13 @@ def getorders():
     print(orders)
     return orders
 
-filtered = [] 
 @app.route('/order-search', methods=['POST'])
 def ordersearch():
     data = request.json
     query = data.get('query')
+
+    if query == '':
+        return orders
     
     filtered_orders = []
     for o in orders:
@@ -70,14 +72,7 @@ def ordersearch():
         print(query)
         if o['name'] == query or o['place'] == query:
             filtered_orders.append(o)
-    print(filtered_orders)
-    filtered = filtered_orders
-    print(filtered)
-    return filtered
-
-@app.route('/order-search-result')
-def ordersearchresult():
-    return filtered
+    return filtered_orders
 
 @app.route('/create-order', methods=['POST'])
 def createorder():

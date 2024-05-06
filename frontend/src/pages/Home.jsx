@@ -20,9 +20,12 @@ function Home() {
 
   return (
     <div className="p-4 m-20">
-      {data?.map((place, index) => (
-        <Place key={index} place={place} />
-      ))}
+      <h1> Nearby Places: </h1>
+      <div>
+        {data?.map((place, index) => (
+          <Place key={index} place={place} />
+        ))}
+      </div>
     </div>
   )
 }

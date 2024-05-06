@@ -22,17 +22,15 @@ function Orders() {
   }, []);
   
   const handleSearch = async (query) => {
-    fetch('/order-search', {
+    const response = await fetch('/order-search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query }),
     })
-    const response = await fetch('/order-search-result');
-    const filtered_orders = await response.json()
-    setOrders(filtered_orders);
-    navigate("/orders")
+    const filteredOrders = await response.json();
+    setOrders(filteredOrders);
   };
     
   const handleClick = (query) => {
@@ -45,7 +43,7 @@ function Orders() {
         <Search onSearch={handleSearch} />
         <PlusSign onClick={handleClick}/>
       </div>
-      <div className="p-4 m-20">
+      <div className="p-4 m-20 grid grid-cols-5 gap-2">
       {orders?.map((order, index) => (
         <Order key={index} order={order} />
       ))}
