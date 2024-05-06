@@ -6,6 +6,7 @@ import os
 from helper import get_user_location, parse_data
 
 app = Flask(__name__)
+orders = []
 
 load_dotenv()
 API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
@@ -51,15 +52,41 @@ def find_nearby_sweets():
         print(f"Error: {e}")
         return None, None
     
-@app.route('/ordersearch', methods=['POST'])
+@app.route('/orders')
+def getorders():
+    print(orders)
+    return orders
+
+filtered = [] 
+@app.route('/order-search', methods=['POST'])
 def ordersearch():
     data = request.json
     query = data.get('query')
-    print(query)
-    return query
+    filtered_orders = []
+    for o in orders:
+        print(o['place'])
+        print(query)
+        if o['name'] == query or o['place'] == query:
+            filtered_orders.append(o)
+    print(filtered_orders)
+    filtered = filtered_orders
+    print(filtered)
+    return filtered
 
-# @app.get('/random')
-# def random()
+@app.route('/order-search-result')
+def ordersearchresult():
+    return filtered
+
+@app.route('/create-order', methods=['POST'])
+def createorder():
+    data = request.json
+    order = {}
+    order['name'] = data.get('name')
+    order['place'] = data.get('place')
+    order['price'] = data.get('price')
+    order['details'] = data.get('details')
+    orders.append(order)
+    return orders
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

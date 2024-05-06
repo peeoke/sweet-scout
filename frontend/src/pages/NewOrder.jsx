@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function NewOrder() {
+    const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     place: '',
@@ -20,8 +22,13 @@ function NewOrder() {
   // Handler function to submit form data
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here, for example, send form data to server
-    console.log(formData);
+    fetch('/create-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
     // Clear form after submission
     setFormData({
       name: '',
@@ -29,6 +36,7 @@ function NewOrder() {
       price: '',
       details: ''
     });
+    navigate('/orders')
   };
 
   return (
