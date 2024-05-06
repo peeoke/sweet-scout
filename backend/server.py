@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import requests
 from dotenv import load_dotenv
 import os
@@ -9,14 +9,12 @@ app = Flask(__name__)
 
 load_dotenv()
 API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+location = get_user_location()
+lat = location['lat']
+lng = location['lng']
 
-@app.get('/')
+@app.route('/')
 def find_nearby_restaurants():
-    location = get_user_location()
-    lat = location['lat']
-    lng = location['lng']
-    print(location)
-
     url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?&keyword=boba&location={lat},{lng}&radius=5000&&key={API_KEY}"
     try:
         response = requests.post(url)
@@ -29,13 +27,8 @@ def find_nearby_restaurants():
         print(f"Error: {e}")
         return None, None
 
-@app.get('/sweets')
+@app.route('/sweets')
 def find_nearby_sweets():
-    location = get_user_location()
-    lat = location['lat']
-    lng = location['lng']
-    print(location)
-    
     keywords = 'coffee|boba|ice cream|cake|cookies'
     url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?&keyword={keywords}&location={lat},{lng}&radius=5000&&key={API_KEY}"
 
@@ -57,6 +50,16 @@ def find_nearby_sweets():
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return None, None
+    
+@app.route('/ordersearch', methods=['POST'])
+def ordersearch():
+    data = request.json
+    query = data.get('query')
+    print(query)
+    return query
+
+# @app.get('/random')
+# def random()
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
