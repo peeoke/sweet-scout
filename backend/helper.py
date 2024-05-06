@@ -22,3 +22,14 @@ def get_user_location():
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return None, None
+
+def parse_data(data):
+    places = []
+    results = data.get('results', [])
+    for p in results: 
+        temp = {
+            'name': p.get('name', 'N/A'),
+            'address': p.get('vicinity', 'N/A')
+        }
+        places.append(temp)
+    return places
