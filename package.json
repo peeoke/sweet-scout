@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "concurrently \"cd frontend && npm run start\" \"cd backend && python3 server.py\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
