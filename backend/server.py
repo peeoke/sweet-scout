@@ -1,20 +1,13 @@
 from flask import Flask, request
-import flask_login
 import requests
 from dotenv import load_dotenv
 import os
 import random 
-import sqlite3
 
 import helper
 
 app = Flask(__name__)
 orders = []
-
-con = sqlite3.connect("sweetscout.db")
-cur = con.cursor()
-login_manager = flask_login.LoginManager()
-login_manager.init_app(app)
 
 load_dotenv()
 API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")

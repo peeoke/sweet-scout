@@ -25,7 +25,7 @@ npm i
 ```
 Now, cd into the frontend directory to install frontend dependencies.
 ```
-cd ../frontend
+cd /frontend
 npm i
 ```
 Finally, cd back into the root directory and run the application.
